@@ -45,7 +45,7 @@ string morsecode(char chc, string input){
             }
         }
         if(!isLetter){
-            output += input2[i] + "   ";
+            output +=  "   ";
         }
        }
 }
