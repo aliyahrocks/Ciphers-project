@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <cmath>
+#include <map>
 using namespace std;
 
 string ceaserCipher(char chc, string msg, int ky);
@@ -9,6 +10,7 @@ string simpleSubCipher(char chc, string msg, string ky);
 string affineCipher(char chc, string msg, int a, int b, int c);
 string vignereCipher(char chc,string ky, string msg);
 string baconianCipher(char chc, string msg);
+string morsecodecipher(char chc, string input);
 string routeCipher(char chc, string msg, int ky);
 
 int main(){
@@ -639,6 +641,105 @@ string baconianCipher(char chc, string msg) {
     }
 
     return output;
+}
+
+string morsecodecipher(char chc, string input){
+    //map containing characters and their morsecode
+    map <char, string> morsecodeDictionary = {
+            { 'A', ".-"  },    { 'B', "-..."  },
+            { 'C', "-.-." },  { 'D', "-.." },
+            { 'E', "."  },     { 'F', "..-."  },
+            { 'G', "--." },   { 'H', "...."  },
+            { 'I', ".."  },    {  'J', ".---" },
+            { 'K', "-.-" },   { 'L', ".-.."  },
+            { 'M', "--" },    { 'N', "-." },
+            { 'O', "---" },   { 'P', ".--." },
+            { 'Q', "--.-"  },  { 'R', ".-."  },
+            { 'S', "..." },   { 'T', "-" },
+            { 'U', "..-" },   { 'V', "...-"  },
+            {  'W', ".--" },   { 'X', "-..-" },
+            {  'Y', "-.--" },  { 'Z', "--.."  }
+    };
+
+    string inputUp;
+    //for loop to change input into upper case as their is no distinction in the morse of upper and lower case alphabets
+    for(int i = 0; i < input.length(); i++){
+        inputUp += toupper(input[i]);
+    }
+
+    string output="";
+    bool isLetter = false;
+    //conditional statment for encryption or decryption
+    if(chc == 'e') {
+        //for loop to iterate through input string
+        for(int i = 0; i < inputUp.length(); i++){
+            //conditional statement to ensure only characters that are uppercase alphabets are encrypted
+            if(int(inputUp[i]) > 64 && int(inputUp[i]) < 91){
+                output += morsecodeDictionary.at(input[i]) + " / ";
+                isLetter = true;
+            }
+            else {
+                isLetter = false;
+            }
+            //if statement to output spaces and other characters
+            if(!isLetter){
+                output += inputUp[i];
+                output+="    ";
+            }
+    
+        }
+    }
+    else if(chc == 'd'){
+        int count = 0;
+        string currentChar;
+        int spacecount = 0;
+
+        for (int i = 0; i < input.length(); i++)
+        {
+            //if statement to seperate morse code characters by space
+            if (input[i] == ' ')
+            {
+                isLetter = false;
+                
+                //for loop to isolate characters into variable current character
+                for (int j = count; j > 0; j--)
+                {
+                    currentChar += input[i-j];
+                    
+                }
+                //for loop to output the key of the element current char by adding 65 to the index thus getting the asciicode
+                for (int k = 0;  k < 26; k++)
+                {
+                    if (currentChar == morsecodeDictionary.at(char(k+65)))
+                    {
+                        output+= char(k+65);
+                        break;
+                    }
+                    
+                }
+
+                //resetting currentChar and count
+                currentChar = "";
+                count = 0;
+            }
+            //ensuring characters that aren't part of the morse code are outputted as is
+            else if(input[i] == '.' || input[i] == '-' ) {
+                count++;
+            }
+            else {
+                output += input[i];
+            }
+            // addition of spaces in between words
+            if(input[i] == ' ' && input[i + 1] == ' ' && input[i + 2]) {
+               output += " ";
+            }
+            
+        }
+
+     }
+
+return output;
+
 }
 
 string routeCipher(char chc, string msg, int ky) {
