@@ -241,7 +241,7 @@ int main(){
         }
          else if (choice == 'd'){
 
-            cout << "Enter message you wish to decrypt, ensure there is a single space in between every letter and three spaces in between words: ";
+            cout << "Enter message you wish to decrypt, ensure there is a single space after every letter and three spaces in between words: ";
         }
          cin.ignore();
         getline(cin, message);
