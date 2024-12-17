@@ -236,7 +236,23 @@ int main(){
 
     else if (menu == 8)
     {
-        
+         if(choice == 'e'){
+            cout << "Enter message you wish to encrypt: ";
+        }
+         else if (choice == 'd'){
+
+            cout << "Enter message you wish to decrypt, ensure there is a single space in between every letter and three spaces in between words: ";
+        }
+         cin.ignore();
+        getline(cin, message);
+         // turns the string "message" into upper case
+        for (int i = 0; i < message.length(); i++){
+            if (message[i] >= 'a' && message[i] <= 'z')
+            {
+                message[i] = message[i] -  32;
+            }
+        }
+        cout << morsecodecipher(choice, message);
     }
 
     else if (menu == 9)
@@ -675,7 +691,7 @@ string morsecodecipher(char chc, string input){
         for(int i = 0; i < inputUp.length(); i++){
             //conditional statement to ensure only characters that are uppercase alphabets are encrypted
             if(int(inputUp[i]) > 64 && int(inputUp[i]) < 91){
-                output += morsecodeDictionary.at(input[i]) + " / ";
+                output += morsecodeDictionary.at(input[i]) + " ";
                 isLetter = true;
             }
             else {
