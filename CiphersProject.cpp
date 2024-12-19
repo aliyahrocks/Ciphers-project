@@ -10,14 +10,14 @@ string simpleSubCipher(char chc, string msg, string ky);
 string affineCipher(char chc, string msg, int a, int b, int c);
 string vignereCipher(char chc,string ky, string msg);
 string baconianCipher(char chc, string msg);
-string morsecodecipher(char chc, string input);
+string polybiusCipher(char chc, int ky[], string msg);
+string morsecodecipher(char chc, string msg);
 string routeCipher(char chc, string msg, int ky);
 
 int main(){
     // variables
     char choice;
     int menu;
-    int shift;
     string message;
     cout << "Encryption or Decryption:\n";
     
@@ -66,6 +66,9 @@ int main(){
     if (menu == 1)
     {
         int key;
+
+        cout << "Enter the number of letters shifted: ";
+        cin >> key;
         if (choice == 'e')
         {
             cout << "Enter message you wish to encrypt: ";
@@ -76,8 +79,6 @@ int main(){
         }
         cin.ignore();
         getline(cin, message);
-        cout << "Enter the number of letters shifted: ";
-        cin >> key;
         // turns the string "message" into lower case
         for (int i = 0; i < message.length(); i++)
         {
@@ -110,6 +111,7 @@ int main(){
                 message[i] = message[i] + 32;
             }
         }
+
         cout << atbashCipher(message);
     }
 
@@ -119,6 +121,33 @@ int main(){
 
         cout << "Enter the key: ";
         cin >> key;
+
+        //Loop to make sure 'key' is made up of unique letters
+        bool isUnique = false;
+        while (!isUnique)
+        {
+            for (int i = 0; i < key.length() - 1; i++)
+            {
+                for (int j = i+1; j < key.length(); j++)
+                {
+                    if (key[i] == key[j])
+                    {
+                        cout << "Invalid key, please reneter the key with unique letters: ";
+                        cin >> key;
+                        isUnique = false;
+                        break;
+                    }
+                    else {
+                        isUnique = true;
+                    }
+                }   
+                if (isUnique == false)
+                {
+                    break;
+                }
+            }
+        }
+        
         if (choice == 'e') {
             cout << "Enter message you wish to encrypt: ";
         }
@@ -127,13 +156,6 @@ int main(){
         }
         cin.ignore();
         getline(cin, message);
-        // turns the string "key" into lower case
-        for(int i = 0; i < key.length(); i++){
-            if (key[i] >= 'A' && key[i] <= 'Z')
-            {
-                key[i] = key[i] + 32;
-            }
-        }
         // turns the string "message" into lower case
         for (int i = 0; i < message.length(); i++)
         {
@@ -171,6 +193,7 @@ int main(){
                 message[i] = message[i] + 32;
             }
         }
+
         cout << affineCipher(choice, message, a, b, c);
     }
 
@@ -187,14 +210,14 @@ int main(){
         }
         cin.ignore();
         getline(cin, message);
-        // turns the string "key" into lower case
+        // turns the string "key" into upper case
         for(int i = 0; i < key.length(); i++){
             if (key[i] >= 'a' && key[i] <= 'z')
             {
                 key[i] = key[i] - 32;
             }
         }
-        // turns the string "message" into lower case
+        // turns the string "message" into upper case
         for(int i = 0; i < message.length(); i++){
             if (message[i] >= 'a' && message[i] <= 'z')
             {
@@ -231,33 +254,71 @@ int main(){
 
     else if (menu == 7)
     {
+        int key[5];
+        int i = 0;
+
+        cout << "Enter key elements in any order: \n";
+        //Ensures only values from 1 to 5 are allowed into the key
+        while (i < 5)
+        {
+            cin >> key[i];
+            if (key[i] > 0  && key[i] < 6) {
+                i++;
+            }
+            else {
+                cout << "Invalid key elements. Choose only numbers from 1 to 5.\n";
+            }
+        }
         
+        if (choice == 'e') {
+            cout << "Enter message you wish to encrypt: ";
+        }
+        else if (choice == 'd') {
+            cout << "Enter message you wish to decrypt: ";
+        }
+   
+        cin.ignore();
+        getline(cin, message);
+
+        // turns the string "message" into upper case
+        for (int i = 0; i < message.length(); i++)
+        {
+            if (message[i] >= 'a' && message[i] <= 'z') {
+                message[i] = message[i] - 32;
+            }
+        }
+        
+        cout << polybiusCipher(choice, key, message);
     }
 
     else if (menu == 8)
     {
-         if(choice == 'e'){
+        if(choice == 'e'){
             cout << "Enter message you wish to encrypt: ";
         }
-         else if (choice == 'd'){
+        else if (choice == 'd'){
 
             cout << "Enter message you wish to decrypt, ensure there is a single space after every letter and three spaces in between words: ";
         }
-         cin.ignore();
+        cin.ignore();
         getline(cin, message);
-         // turns the string "message" into upper case
+        // turns the string "message" into upper case
         for (int i = 0; i < message.length(); i++){
             if (message[i] >= 'a' && message[i] <= 'z')
             {
                 message[i] = message[i] -  32;
             }
         }
+
         cout << morsecodecipher(choice, message);
     }
 
     else if (menu == 9)
     {
         int key;
+
+        cout << "Enter Key: ";
+        cin >> key;
         if (choice == 'e')
         {
             cout << "Enter message you wish to encrypt: ";
@@ -268,16 +329,14 @@ int main(){
         }
         cin.ignore();
         getline(cin, message);
-        cout << "Enter Key:";
-        cin >> key;
-        // turns the string "message" into lower case
-        for (int i = 0; i < message.length(); i++)
-        {
-            if (message[i] >= 'A' && message[i] <= 'Z')
+        // turns the string "message" into upper case
+        for(int i = 0; i < message.length(); i++){
+            if (message[i] >= 'a' && message[i] <= 'z')
             {
-                message[i] = message[i] + 32;
+                message[i] = message[i] - 32;
             }
         }
+
         cout << routeCipher(choice, message, key);
     }
     
@@ -658,8 +717,106 @@ string baconianCipher(char chc, string msg) {
 
     return output;
 }
+string polybiusCipher(char chc, int ky[], string msg) {
+    //Variables used in function
+    string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    char table[5][5];
+    int currentIndex = 0;
+    bool isFound = false;
+    bool isLetter = false;
+    string output;
+    
+    // this loop inserts letters into 5x5 matrix
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            // if current letter = 'J', exclude 'J' from table matrix. 
+            if (currentIndex >= 9)
+            {
+                table[i][j] = letters[currentIndex + 1]; 
+            }
+            else
+            {
+                table[i][j] = letters[currentIndex];
+            }
+            currentIndex++;
+        }
+    }
 
-string morsecodecipher(char chc, string input){
+    //Encryption
+    if (chc == 'e') {
+        // first for loop cycles through each character of the message
+        for (int i = 0; i < msg.length(); i++) {
+            // 2nd and 3rd loops  compare each 'message' letter to letters in table
+            for (int j = 0; j < 5; j++)
+            {
+                //If the letter is found in the matrix break the loop
+                if (isFound)
+                {
+                    break;
+                }
+                for (int k = 0; k < 5; k++)
+                {
+                    if (msg[i] == table[j][k]) {
+                        output += to_string(ky[j]); // converts int type of key to string in order to append it
+                        output += to_string(ky[k]);
+                        isFound = true;
+                        isLetter = true;
+                        break;
+                    }
+                    // if current character is 'J', it is replaced with 'I'
+                    else if (msg[i] == 'J') {
+                        output += to_string(ky[1]);
+                        output += to_string(ky[3]);
+                        isFound = true;
+                        isLetter = true;
+                        break;
+                    }
+                }
+            }
+            //if the current character is not a letter add to 'output'
+            if (!isLetter)
+            {
+                output += msg[i];
+            }
+            isLetter = false;
+            isFound = false;
+        }
+    }
+    //Decryption
+    else if(chc == 'd') {
+        for (int i = 0; i < msg.length(); ) 
+        {
+            if ((msg[i] - '0') > 0 && (msg[i] - '0') < 6)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+                    if ((msg[i] - '0') == ky[j])
+                    {
+                        for (int k = 0; k < 5; k++)
+                        {
+                            if ((msg[i + 1] - '0') == ky[k])
+                            {
+                                output += table[j][k];
+                                i += 2;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+            //if the current character is not a letter add to 'output'
+            else {
+                output += msg[i];
+                i++;
+            }
+        }
+    }
+
+    return output;
+}
+
+string morsecodecipher(char chc, string msg){
     //map containing characters and their morsecode
     map <char, string> morsecodeDictionary = {
             { 'A', ".-"  },    { 'B', "-..."  },
@@ -677,50 +834,44 @@ string morsecodecipher(char chc, string input){
             {  'Y', "-.--" },  { 'Z', "--.."  }
     };
 
-    string inputUp;
-    //for loop to change input into upper case as their is no distinction in the morse of upper and lower case alphabets
-    for(int i = 0; i < input.length(); i++){
-        inputUp += toupper(input[i]);
-    }
-
     string output="";
     bool isLetter = false;
-    //conditional statment for encryption or decryption
+    //Encryption;
     if(chc == 'e') {
-        //for loop to iterate through input string
-        for(int i = 0; i < inputUp.length(); i++){
-            //conditional statement to ensure only characters that are uppercase alphabets are encrypted
-            if(int(inputUp[i]) > 64 && int(inputUp[i]) < 91){
-                output += morsecodeDictionary.at(input[i]) + " ";
+        //for loop to iterate through 'msg'
+        for(int i = 0; i < msg.length(); i++){
+            //conditional statement to ensure only characters that are letters are encrypted
+            if(int(msg[i]) > 64 && int(msg[i]) < 91){
+                output += morsecodeDictionary.at(msg[i]) + " ";
                 isLetter = true;
             }
             else {
                 isLetter = false;
             }
-            //if statement to output spaces and other characters
+            //if the current character is not a letter add to 'output'
             if(!isLetter){
-                output += inputUp[i];
+                output += msg[i];
                 output+="    ";
             }
     
         }
     }
+    //Decryption
     else if(chc == 'd'){
         int count = 0;
         string currentChar;
-        int spacecount = 0;
 
-        for (int i = 0; i < input.length(); i++)
+        for (int i = 0; i < msg.length(); i++)
         {
             //if statement to seperate morse code characters by space
-            if (input[i] == ' ')
+            if (msg[i] == ' ')
             {
                 isLetter = false;
                 
                 //for loop to isolate characters into variable current character
                 for (int j = count; j > 0; j--)
                 {
-                    currentChar += input[i-j];
+                    currentChar += msg[i-j];
                     
                 }
                 //for loop to output the key of the element current char by adding 65 to the index thus getting the asciicode
@@ -739,19 +890,18 @@ string morsecodecipher(char chc, string input){
                 count = 0;
             }
             //ensuring characters that aren't part of the morse code are outputted as is
-            else if(input[i] == '.' || input[i] == '-' ) {
+            else if(msg[i] == '.' || msg[i] == '-' ) {
                 count++;
             }
             else {
-                output += input[i];
+                output += msg[i];
             }
             // addition of spaces in between words
-            if(input[i] == ' ' && input[i + 1] == ' ' && input[i + 2]) {
+            if(msg[i] == ' ' && msg[i + 1] == ' ' && msg[i + 2] == ' ') {
                output += " ";
+               i+=3;
             }
-            
         }
-
      }
 
 return output;
@@ -792,7 +942,7 @@ string routeCipher(char chc, string msg, int ky) {
                     currentIndex++;
                 }
                 else {
-                    route[i][j] = 'x';
+                    route[i][j] = 'X';
                 }
             }
         }
@@ -800,24 +950,28 @@ string routeCipher(char chc, string msg, int ky) {
         for (int i = 0; i < loopInterations; i++)
         {
             // mod 4 used to change directions
+            //South
             if (i%4 == 0){
                 for (int j = ope; j < rows-ope; j++)
                 {
                     output += route[j][(ky-1)-ope];
                 }
             }
+            //West
             else if(i%4 == 1){
                 for (int j = (ky-1)-ope; j > ope; j--)
                 {
                     output += route[rows-1-ope][j-1];
                 }
             }
+            //North
             else if(i%4 == 2){
                 for (int j = (rows-1)-ope; j > ope; j--)
                 {
                     output += route[j-1][ope];
                 }
             }
+            //East
             else if(i%4 == 3){
                 for (int j = 1+ope; j < (ky-1)-ope; j++)
                 {
@@ -859,12 +1013,16 @@ string routeCipher(char chc, string msg, int ky) {
                 }
                 ope++;
             }
-    }
+        }
 
-    //For loop to input values from 'route' eto 'output'
+        //For loop to input values from 'route' to 'output'
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < ky; j++) {
-                    output += route[i][j];
+                    if (route[i][j] != "X")
+                    {
+                        output += route[i][j];
+                    }
+                    
             }
         }
     }
