@@ -4,7 +4,7 @@
 #include <map>
 using namespace std;
 
-string ceaserCipher(char chc, string msg, int ky);
+string caeserCipher(char chc, string msg, int ky);
 string atbashCipher(string msg);
 string simpleSubCipher(char chc, string msg, string ky);
 string affineCipher(char chc, string msg, int a, int b, int c);
@@ -41,7 +41,7 @@ int main(){
     // second loop to only allow valid inputs
     while (true)
     {
-        cout << "   1- Ceaser Cipher\n";
+        cout << "   1- Caeser Cipher\n";
         cout << "   2- Atbash Cipher\n";
         cout << "   3- Simple Substitution Cipher\n";
         cout << "   4- Affine Cipher\n";
@@ -88,7 +88,7 @@ int main(){
             }
         }
 
-        cout << ceaserCipher(choice, message, key);
+        cout << caeserCipher(choice, message, key);
     }
 
     else if (menu == 2)
@@ -343,7 +343,7 @@ int main(){
     return 0;
 }
 
-string ceaserCipher(char chc, string msg, int ky) {
+string caeserCipher(char chc, string msg, int ky) {
     //Variables used in function
     string letters = "abcdefghijklmnopqrstuvwxyz";
     string output;
